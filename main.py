@@ -6,20 +6,20 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+blue = (135,206,250)
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+player_pos = pygame.Vector2(screen.get_width() / 2 - 400, screen.get_height() / 2)
+player_speed = 5
 
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("white")
+    screen.fill(blue)
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    pygame.draw.circle(screen, "black", player_pos, 20)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
