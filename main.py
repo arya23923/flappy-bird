@@ -1,4 +1,5 @@
 import pygame
+import math
 
 # pygame setup
 pygame.init()
@@ -6,18 +7,31 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-blue = (135,206,250)
 
-player_pos = pygame.Vector2(screen.get_width() / 2 - 400, screen.get_height() / 2)
-player_speed = 5
+bg = pygame.image.load('./images/sky.jpg').convert()
+
+scroll = 0 
+tiles = math.ceil(1280  /bg.get_width()) + 1 
+
+player_pos = pygame.Vector2(screen.get_width() / 2 - 500, screen.get_height() / 2)
 
 while running:
+
+    clock.tick(50)
+
+    i = 0
+    while(i<tiles):
+        screen.blit(bg, (bg.get_width()*i + scroll, 0))
+        i+=1
     
+    scroll -= 6
+
+    if abs(scroll) > bg.get_width():
+        scroll = 0
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    screen.fill(blue)
 
     pygame.draw.circle(screen, "black", player_pos, 20)
 
@@ -31,12 +45,14 @@ while running:
     if keys[pygame.K_d]:
         player_pos.x += 300 * dt
 
-    # flip() the display to put your work on screen
     pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
     dt = clock.tick(60) / 1000
+    
+    pygame.display.update()
+    
+
 
 pygame.quit()
+
+
+ 
