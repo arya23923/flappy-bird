@@ -33,6 +33,17 @@ for i in range(4):
     offset = random.randint(200, 400)  # fixed offset range prevents floating pipes
     pipes.append([x, offset])
 
+def reset_game():
+    """Resets bird and pipe positions."""
+    global bird_x, bird_y, pipes
+    bird_x = 200
+    bird_y = screen.get_height() // 2
+    pipes = []
+    for i in range(5):
+        x = 700 + i * PIPE_SPACING
+        offset = random.randint(200, 400)
+        pipes.append([x, offset])
+
 # Game loop
 running = True
 while running:
