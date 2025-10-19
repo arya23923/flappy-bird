@@ -1,7 +1,6 @@
 import pygame
 import random
 import numpy as np
-import math
 import sys
 
 SCREEN_W, SCREEN_H = 1280, 720
