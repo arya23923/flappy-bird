@@ -1,1 +1,5 @@
-# flappy-bird
+# Flappy-bird using genetic algorithm
+
+This project demonstrates how genetic algorithm works visually with the use of the classical game "Flappy bird". It implements a simple feed forward neural network which takes in the input of the position of the bird along, velocity, distance from the pipes and distance from the gap in the pipes. It takes 4 inputs, has a single layer of 6 hidden neurons and the output being whether the bird should flap or not. There are multiple instances of birds generated which evolve with each generation using crossover and mutation. Evolution continues with each generation until we are left with updated weights and biases which allow the birds to score higher with score being evaluated on the number of obstacles it successfully passes. 
+
+<video src="./flappy.mp4" controls></video>
