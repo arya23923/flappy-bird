@@ -172,7 +172,7 @@ def draw_text(surf, text, x, y, size=24, color=(0,0,0)):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
-    pygame.display.set_caption("Flappy GA")
+    pygame.display.set_caption("Flappy bird using genetic algorithm")
     clock = pygame.time.Clock()
 
     bg_color = (135, 206, 235)  
