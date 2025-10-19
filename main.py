@@ -30,13 +30,14 @@ SCROLL_SPEED = 5
 
 def create_pipes():
     pipes = []
-    min_gap_y = PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30
-    max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30)
+    min_gap_y = 150                   
+    max_gap_y = screen.get_height() - 150  
     for i in range(6):
         x = 700 + i * PIPE_SPACING
         gap_y = random.randint(min_gap_y, max_gap_y)
         pipes.append([x, gap_y])
     return pipes
+
 
 pipes = create_pipes()
 
@@ -44,7 +45,6 @@ while running:
     clock.tick(40)
     screen.fill((0, 0, 0))
 
-    # Background scroll
     i = 0
     while i < tiles:
         screen.blit(bg, (bg.get_width() * i + scroll, 0))
@@ -53,42 +53,32 @@ while running:
     if abs(scroll) > bg.get_width():
         scroll = 0
 
-    # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Bird movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         bird_y -= bird_speed * 2
     bird_y += bird_speed
 
-    # Draw and move pipes
     for pipe_data in pipes:
         pipe_x, gap_y = pipe_data
         top_pipe_bottom = gap_y - (GAP_HEIGHT // 2)
         bottom_pipe_top = gap_y + (GAP_HEIGHT // 2)
 
-        # Draw top and bottom pipes
         screen.blit(pipe_ulta, (pipe_x, top_pipe_bottom - PIPE_HEIGHT))
         screen.blit(pipe, (pipe_x, bottom_pipe_top))
 
-        # Move pipes left
         pipe_data[0] -= SCROLL_SPEED
 
-        # Recycle pipes when off-screen (shift them further apart)
         if pipe_data[0] < -PIPE_WIDTH:
-            # Push new pipe to far right, ensuring spacing
             pipe_data[0] = max([p[0] for p in pipes]) + PIPE_SPACING
-            min_gap_y = PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30
-            max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30)
-            pipe_data[1] = random.randint(min_gap_y, max_gap_y)
+            pipe_data[1] = random.randint(150, screen.get_height() - 150)
 
-    # Draw bird
+
     screen.blit(bird, (bird_x, bird_y))
 
-    # End game if bird falls off screen
     if bird_y > screen.get_height():
         running = False
 
