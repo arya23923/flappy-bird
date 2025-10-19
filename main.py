@@ -2,25 +2,21 @@ import pygame
 import random
 import math
 
-# Pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
-# Background
 bg = pygame.image.load('./images/sky.jpg').convert()
 scroll = 0
 tiles = math.ceil(1280 / bg.get_width()) + 1
 
-# Bird
 bird = pygame.image.load("./images/bird.png")
 bird = pygame.transform.scale(bird, (50, 50))
 bird_speed = 8
 bird_x = 200
 bird_y = screen.get_height() // 2
 
-# Pipes
 pipe = pygame.image.load('./images/pipe.png')
 pipe = pygame.transform.scale(pipe, (180, 400))
 pipe_ulta = pygame.image.load('./images/pipe-ulta.png')
@@ -28,15 +24,14 @@ pipe_ulta = pygame.transform.scale(pipe_ulta, (180, 400))
 
 PIPE_WIDTH = 180
 PIPE_HEIGHT = 400
-GAP_HEIGHT = 180
+GAP_HEIGHT = 140      
 PIPE_SPACING = 350
 SCROLL_SPEED = 5
 
-# Create multiple pipe pairs
 def create_pipes():
     pipes = []
-    min_gap_y = PIPE_HEIGHT // 2 + GAP_HEIGHT // 2
-    max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + GAP_HEIGHT // 2)
+    min_gap_y = PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30
+    max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30)
     for i in range(6):
         x = 700 + i * PIPE_SPACING
         gap_y = random.randint(min_gap_y, max_gap_y)
@@ -45,9 +40,8 @@ def create_pipes():
 
 pipes = create_pipes()
 
-# Game loop
 while running:
-    clock.tick(60)
+    clock.tick(40)
     screen.fill((0, 0, 0))
 
     # Background scroll
@@ -70,25 +64,25 @@ while running:
         bird_y -= bird_speed * 2
     bird_y += bird_speed
 
-    # Draw pipes and scroll them
+    # Draw and move pipes
     for pipe_data in pipes:
         pipe_x, gap_y = pipe_data
         top_pipe_bottom = gap_y - (GAP_HEIGHT // 2)
         bottom_pipe_top = gap_y + (GAP_HEIGHT // 2)
 
-        # Draw top pipe (flipped)
+        # Draw top and bottom pipes
         screen.blit(pipe_ulta, (pipe_x, top_pipe_bottom - PIPE_HEIGHT))
-        # Draw bottom pipe
         screen.blit(pipe, (pipe_x, bottom_pipe_top))
 
-        # Move pipe
+        # Move pipes left
         pipe_data[0] -= SCROLL_SPEED
 
-        # Recycle pipe when off-screen
+        # Recycle pipes when off-screen (shift them further apart)
         if pipe_data[0] < -PIPE_WIDTH:
-            pipe_data[0] = screen.get_width() + PIPE_SPACING
-            min_gap_y = PIPE_HEIGHT // 2 + GAP_HEIGHT // 2
-            max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + GAP_HEIGHT // 2)
+            # Push new pipe to far right, ensuring spacing
+            pipe_data[0] = max([p[0] for p in pipes]) + PIPE_SPACING
+            min_gap_y = PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30
+            max_gap_y = screen.get_height() - (PIPE_HEIGHT // 2 + (GAP_HEIGHT // 2) + 30)
             pipe_data[1] = random.randint(min_gap_y, max_gap_y)
 
     # Draw bird
