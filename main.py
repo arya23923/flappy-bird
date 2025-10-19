@@ -79,7 +79,7 @@ class Bird:
         self.y = SCREEN_H / 2 + random.uniform(-50, 50)
         self.vel = 0.0
         self.alive = True
-        self.score = 0  # pipes passed
+        self.score = 0 
         self.fitness = 0.0
         self.color = (random.randint(50,255), random.randint(50,255), random.randint(50,255))
         if brain is None:
@@ -235,7 +235,6 @@ def main():
             pipes.append(PipePair(new_x))
 
         for b in alive:
-            # nearest pipe:
             nearest = None
             for p in pipes:
                 if p.x + PIPE_WIDTH > b.x - 10:
@@ -246,17 +245,14 @@ def main():
             b.decide(nearest)
             b.update()
 
-            # collisions with pipes
             for p in pipes:
                 if p.collides(b):
                     b.alive = False
                     break
 
-            # out of bounds
             if b.y < -50 or b.y > SCREEN_H + 50:
                 b.alive = False
 
-            # score increments when passes pipe center x
             for p in pipes:
                 if (not p.passed) and (p.x + PIPE_WIDTH/2 < b.x):
                     p.passed = True
